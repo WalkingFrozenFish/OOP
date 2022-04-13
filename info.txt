@@ -1,0 +1,5 @@
+Обработка ts файла, будет создан файл js
+tsc -t es5 script.ts
+
+Запуск файла js
+node script.js
