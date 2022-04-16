@@ -14,12 +14,12 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 // Процедурный подход в программировании
-var width = 5;
-var height = 10;
-function calcRectArea(width, height) {
-    return width * height;
+var width1 = 5;
+var height1 = 10;
+function calcRectArea1(width1, height1) {
+    return width1 * height1;
 }
-calcRectArea(width, height);
+calcRectArea1(width1, height1);
 // ООП
 // Класс - это набор характеристик, которые описывают некоторую сущность
 // К примеру класс "Человек", этот класс обладает такими характеристиками как Имя, Фамилия, Возраст, Вес, Рост. Они характеризуют некоторую сущность, то есть в данном сучае человека
@@ -224,6 +224,10 @@ var Person = /** @class */ (function () {
         this._lastName = lastName;
         this._age = age;
     }
+    // Пример полиморфизма
+    Person.prototype.greeting = function () {
+        console.log("\u041F\u0440\u0438\u0432\u0435\u0442, \u044F \u0447\u0435\u043B\u043E\u0432\u0435\u043A, \u0438 \u043C\u0435\u043D\u044F \u0437\u043E\u0432\u0443\u0442 ".concat(this._firstName));
+    };
     Object.defineProperty(Person.prototype, "fullName", {
         // Создаем геттер для получения имени и фамилии
         get: function () {
@@ -276,27 +280,84 @@ var Employee = /** @class */ (function (_super) {
     function Employee(firstName, lastName, age, inn, number, snils) {
         var _this = 
         // Сперва будет вызван родительский конструктор, и только потом выполнять в данном классе какие то действия
+        // Сперва объявляем через ключевое слово super, родительский конструктор
         _super.call(this, firstName, lastName, age) || this;
         _this._inn = inn;
         _this._number = number;
         _this._snils = snils;
         return _this;
     }
+    // Пример полиморфизма, переопределяем метод родительского класса
+    Employee.prototype.greeting = function () {
+        console.log("\u041F\u0440\u0438\u0432\u0435\u0442, \u044F \u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A, \u0438 \u043C\u0435\u043D\u044F \u0437\u043E\u0432\u0443\u0442 ".concat(this.firstName));
+    };
     return Employee;
 }(Person));
+// Создаем экземпляр класса "Employee", куда передаем свойства Имя, Фамилия, Возраст, данные свойства унаследованы от родительского класса. Затем передаем другие данные, которые определены в классе "Employee"
 var employee1 = new Employee("Name", "Last name", 20, 123, 432, 12341234);
 console.log(employee1);
+// Так же мы можем вызывать методы родительского класса
 console.log(employee1.fullName);
+// Создаем класс "Developer", который будет наследовать свойства и методы родительского класса
 var Developer = /** @class */ (function (_super) {
     __extends(Developer, _super);
+    // В конструктор передаем значения родительского класса и текущего класса
     function Developer(firstName, lastName, age, inn, number, snils, level, language) {
-        var _this = _super.call(this, firstName, lastName, age, inn, number, snils) || this;
+        var _this = 
+        // Объявляем конструктор родительского класса
+        _super.call(this, firstName, lastName, age, inn, number, snils) || this;
         _this._level = level;
         _this._language = language;
         return _this;
     }
+    // Пример полиморфизма, переопределяем родительский метод
+    Developer.prototype.greeting = function () {
+        console.log("\u041F\u0440\u0438\u0432\u0435\u0442, \u044F \u0440\u0430\u0437\u0440\u0430\u0431\u043E\u0442\u0447\u0438\u043A, \u0438 \u043C\u0435\u043D\u044F \u0437\u043E\u0432\u0443\u0442 ".concat(this.firstName));
+    };
     return Developer;
 }(Employee));
+// Создаем экземпляр класса "Developer"
 var developer1 = new Developer("DevName", "DevLastName", 23, 12341234, 4321, 123512351251235, "Senior", "JS");
 console.log(developer1);
+// Вызываем свойства, которые были определены в родительском классе
 console.log(developer1.fullName);
+// Полиморфизм - в контексте ООП, это некоторый принцип, который позволяет работать одному и тому же коду с разными типами данных
+// Выделяют два вида полиморфизма, это ad-hoc и параметрический
+// Ad-hoc - мнимый полиморфизм. Позволяет использовать один метод, но с разными типами данных
+// class Calculator {
+//     add(a: number, b: number): number {
+//         return a + b;
+//     }
+//     add(a: string, b: string): string {
+//         return a + b;
+//     }
+// }
+// let cl1 = new Calculator();
+// let cl2 = new Calculator();
+// cl1.add(1, 1);
+// cl2.add("1", "1");
+// Параметрический -
+// К примеру три сущности в комнтае, и надо что бы они поздоровались друг с другом
+// Каждый говорит
+// Я вася
+// Я работник
+// Я программист
+// Мы должны сделать функцию которая принимает неограниченное количество обьектов, унаследованных от персон
+// public greeting() {
+// console.log(`Привет, я человек, и меня зовут ${this._firstName}`);
+// }
+var dev1 = new Developer("fnDev", "lnDev", 23, 123, 321, 3123123, "Junior", "JS");
+var emp1 = new Employee("fnEmp", "lnEmp", 23, 123312, 412, 124124);
+var per1 = new Person("fnPer", "lnPer", 23);
+// У каждого есть родительский метод
+dev1.greeting();
+emp1.greeting();
+per1.greeting();
+// Лог
+// Привет, я человек, и меня зовут fnDev
+// Привет, я человек, и меня зовут fnEmp
+// Привет, я человек, и меня зовут fnPer 
+dev1.greeting();
+emp1.greeting();
+per1.greeting();
+// Лог после переопределения метода

@@ -1,12 +1,12 @@
 // Процедурный подход в программировании
-const width = 5;
-const height = 10;
+const width1 = 5;
+const height1 = 10;
 
-function calcRectArea(width, height) {
-    return width * height;
+function calcRectArea1(width1, height1) {
+    return width1 * height1;
 }
 
-calcRectArea(width, height);
+calcRectArea1(width1, height1);
 
 
 // ООП
@@ -257,6 +257,11 @@ class Person {
         this._age = age;
     }
 
+    // Пример полиморфизма
+    public greeting() {
+        console.log(`Привет, я человек, и меня зовут ${this._firstName}`);
+    }
+
     // Создаем геттер для получения имени и фамилии
     public get fullName() {
         return `Фамилия - ${this._lastName} Имя - ${this._firstName}`;
@@ -307,6 +312,11 @@ class Employee extends Person {
         this._number = number;
         this._snils = snils;
     }
+
+    // Пример полиморфизма, переопределяем метод родительского класса
+    greeting() {
+        console.log(`Привет, я работник, и меня зовут ${this.firstName}`)
+    }
 }
 
 // Создаем экземпляр класса "Employee", куда передаем свойства Имя, Фамилия, Возраст, данные свойства унаследованы от родительского класса. Затем передаем другие данные, которые определены в классе "Employee"
@@ -329,6 +339,11 @@ class Developer extends Employee {
         this._level = level;
         this._language = language;
     }
+
+    // Пример полиморфизма, переопределяем родительский метод
+    greeting() {
+        console.log(`Привет, я разработчик, и меня зовут ${this.firstName}`)
+    }
 }
 
 // Создаем экземпляр класса "Developer"
@@ -337,3 +352,58 @@ const developer1 = new Developer("DevName", "DevLastName", 23, 12341234, 4321, 1
 console.log(developer1);
 // Вызываем свойства, которые были определены в родительском классе
 console.log(developer1.fullName);
+
+
+
+// Полиморфизм - в контексте ООП, это некоторый принцип, который позволяет работать одному и тому же коду с разными типами данных
+// Выделяют два вида полиморфизма, это ad-hoc и параметрический
+
+// Ad-hoc - мнимый полиморфизм. Позволяет использовать один метод, но с разными типами данных
+
+// class Calculator {
+//     add(a: number, b: number): number {
+//         return a + b;
+//     }
+
+//     add(a: string, b: string): string {
+//         return a + b;
+//     }
+// }
+
+// let cl1 = new Calculator();
+// let cl2 = new Calculator();
+// cl1.add(1, 1);
+// cl2.add("1", "1");
+
+
+// Параметрический - Представим что в комнате есть три объекта, человек, работник и программист. Мы должны сделать так, что бы они поздоровались.
+// Привет, я человек
+// Привет, я работник
+// Привет, я программист
+
+// Для этого мы будем использовать один и тот же метод
+
+// Метод, который мы объявили в родительском классе, и потом переопределили его в дочерних классах. То есть один и тот же метод но работает с разными типами данных
+// public greeting() {
+//      console.log(`Привет, я человек, и меня зовут ${this._firstName}`);
+// }
+
+// Создаем три объекта
+const dev1 = new Developer("fnDev", "lnDev", 23, 123, 321, 3123123, "Junior", "JS");
+const emp1 = new Employee("fnEmp", "lnEmp", 23, 123312, 412, 124124);
+const per1 = new Person("fnPer", "lnPer", 23);
+
+// У каждого есть родительский метод
+dev1.greeting();
+emp1.greeting();
+per1.greeting();
+
+// Лог до переопределения метода
+// Привет, я человек, и меня зовут fnDev
+// Привет, я человек, и меня зовут fnEmp
+// Привет, я человек, и меня зовут fnPer
+
+// Лог после переопределения метода
+// Привет, я разработчик, и меня зовут fnDev
+// Привет, я работник, и меня зовут fnEmp
+// Привет, я человек, и меня зовут fnPer
